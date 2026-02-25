@@ -1,12 +1,3 @@
-// module apischema
-module github.com/adilshaikabdul/apischema
+module github.com/adilshaikabdul/shared-middleware/apischema
 
 go 1.23
-
-
-
-
-
-
-
-
