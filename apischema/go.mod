@@ -1,3 +1,3 @@
-module github.com/adilshaikabdul/shared-middleware/apischema
+module github.com/engrotech/shared-middleware/apischema
 
 go 1.23
