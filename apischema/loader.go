@@ -217,7 +217,7 @@ func (l *Loader) extractPath(u postmanURL) string {
 // It extracts:
 //   - path parameters from URL path segments with `{param}` syntax
 //   - query parameters from the URL query string
-//   - header parameters from request headers (excluding internal HTTP headers)
+//   - header parameters from request headers (including all headers: Cookie, origin, sec-*, etc.)
 //   - body parameters from raw JSON request body
 func (l *Loader) buildParameters(req *postmanRequest) []EndpointParameter {
 	params := make([]EndpointParameter, 0)
@@ -262,13 +262,10 @@ func (l *Loader) buildParameters(req *postmanRequest) []EndpointParameter {
 		}
 	}
 
-	// Header parameters from request headers (excluding internal HTTP headers).
+	// Header parameters from request headers (including all headers).
 	if req.Header != nil {
 		for _, h := range req.Header {
-			// Skip standard HTTP headers that shouldn't be treated as parameters
-			if isInternalHeader(strings.ToLower(h.Key)) {
-				continue
-			}
+			// Extract ALL headers without filtering (including Cookie, origin, sec-* headers, etc.)
 			// Resolve variables in header value
 			resolvedValue := l.resolveVariables(h.Value)
 			params = append(params, EndpointParameter{
